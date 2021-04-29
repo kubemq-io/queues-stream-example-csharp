@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "bC36knMY4XdXbcXTlAXnQc9p4NWG44+yuWnQb1opc3zrGyiAM4nbNXfAKDD6ZQ7RYxZtJ9r5WlDPDbl02MuwVg==",
+  "dgSpecHash": "sbK6EaimAPGg7gyT/l+Y9uEeueFVyxeg7QRy6QytNR/rVzezi1b3js/Xe+SD9+IoQKqB9ynfKpaTmXJ13wP0yw==",
   "success": true,
   "projectFilePath": "D:\\Development\\bitbucket\\.net\\queues-stream-example-csharp\\QueusStream\\QueusStream.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lior.nabat\\.nuget\\packages\\google.protobuf\\3.15.8\\google.protobuf.3.15.8.nupkg.sha512",
     "C:\\Users\\lior.nabat\\.nuget\\packages\\grpc.core\\2.37.0\\grpc.core.2.37.0.nupkg.sha512",
     "C:\\Users\\lior.nabat\\.nuget\\packages\\grpc.core.api\\2.37.0\\grpc.core.api.2.37.0.nupkg.sha512",
-    "C:\\Users\\lior.nabat\\.nuget\\packages\\kubemq.sdk.csharp\\1.4.1\\kubemq.sdk.csharp.1.4.1.nupkg.sha512",
+    "C:\\Users\\lior.nabat\\.nuget\\packages\\kubemq.sdk.csharp\\1.5.0\\kubemq.sdk.csharp.1.5.0.nupkg.sha512",
     "C:\\Users\\lior.nabat\\.nuget\\packages\\microsoft.extensions.configuration\\3.1.2\\microsoft.extensions.configuration.3.1.2.nupkg.sha512",
     "C:\\Users\\lior.nabat\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.2\\microsoft.extensions.configuration.abstractions.3.1.2.nupkg.sha512",
     "C:\\Users\\lior.nabat\\.nuget\\packages\\microsoft.extensions.configuration.binder\\3.1.2\\microsoft.extensions.configuration.binder.3.1.2.nupkg.sha512",

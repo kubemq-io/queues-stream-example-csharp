@@ -4,116 +4,60 @@ using System.Diagnostics;
 using System.Threading;
 using System.Linq;
 using System.Threading.Tasks;
-using KubeMQ.SDK.csharp.Queue;
+using KubeMQ.SDK.csharp.QueueStream;
 
 namespace QueusStream
 {
    class Program
     {
-        static int tasks = 10;
-        static int send = 500;
+        static int tasks = 20;
+        static int send = 10000;
         static string address = "localhost:50000";
-        static int rounds = 10;
+        static int rounds = 100;
         static string queue = "f";
-        static int ackDelay = 0;
+        static KubeMQ.SDK.csharp.QueueStream.QueueStream queuesClient = new QueueStream(address, "queue-receiver", null);
 
-        static KubeMQ.SDK.csharp.Queue.Queue
-            globalReceiver = new KubeMQ.SDK.csharp.Queue.Queue("", "queue-receiver", address);
-
-        static private async Task GetMessagesInTransaction(int id)
-        {
-            await Task.Run(() =>
+    static private async Task<long> GetPollMessages(int id)
+    {
+        long time = 0;
+            await Task.Run(async () =>
             {
-                var receiveCounter = 0;
-                KubeMQ.SDK.csharp.Queue.Queue localReceiver = new KubeMQ.SDK.csharp.Queue.Queue($"{queue}.{id + 1}", $"local-queue-receiver-{id+1}", address);
-                while (receiveCounter < send)
-                {
-                    var transaction = localReceiver.CreateTransaction();
-                    KubeMQ.SDK.csharp.Queue.Stream.TransactionMessagesResponse resRec;
-                    try
-                    {
-                        resRec = transaction.Receive( 10, 15);
-                        if (resRec.IsError)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                Thread.Sleep(ackDelay);
-                                var ackRes = transaction.AckMessage(resRec.Message.Attributes.Sequence);
-                                if (ackRes.IsError)
-                                {
-                                    Console.WriteLine($"Error in ack Message, error:{ackRes.Error}");
-                                    continue;
-                                }
-
-                                receiveCounter++;
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                            }
-                          
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Console.WriteLine($"Message Receive error, error:{ex.Message}");
-                    }
-                    finally
-                    {
-                        transaction.Close();
-                    }
-                };
-            });
-        }
-
-    static private  async Task GetMessagesInPull(int id)
-        {
-            await Task.Run(() =>
-            {
+                Stopwatch watch = new Stopwatch();
                 try
                 {
-                    var msg = globalReceiver.Pull($"{queue}.{id+1}", send,2);
-                    if (msg.IsError)
+                    PollRequest pollRequest = new PollRequest()
                     {
-                        Console.WriteLine($"message dequeue error, error:{msg.Error}");
-                    }
+                        Queue = $"{queue}.{id + 1}",
+                        WaitTimeout = 1000,
+                        MaxItems = 5000,
+                    };
+                    watch.Start();
+                    PollResponse response = await queuesClient.Poll(pollRequest);
+
+                    if (response.HasMessages)
                     {
-                        Console.WriteLine($"{msg.Messages.Count()} messages received");    
+                        response.AckAll();
                     }
+                    
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
+                finally
+                {
+                    watch.Stop();
+                   
+                }
+                time= watch.ElapsedMilliseconds;
             });
-        }
-        private static async Task RunTasks(int concurrent,bool isPull)
-        {
-            Task[] taskArray = new Task[concurrent];
-            for (int i = 0; i < taskArray.Length; i++)
-            {
-                if (isPull)
-                {
-                    taskArray[i] = GetMessagesInPull(i);    
-                }
-                else
-                {
-                    taskArray[i] = GetMessagesInTransaction(i);
-                }
-                
-            }
+            return time;
+    }
+       
+        static async Task Main(string[] args)
 
+        {
             
-            await Task.WhenAll(taskArray);
-        }
-        static void Main(string[] args)
-
-        {
-            var senders = new KubeMQ.SDK.csharp.Queue.Queue("", "queue-stream-tester", address);
 
             var counter = 0;
             var roundsDone = false;
@@ -128,14 +72,13 @@ namespace QueusStream
                 {
                     roundsDone = false;
                 }
-
+                List<Message> msgs = new List<Message>();
                  for (int i = 0; i < tasks; i++)
                 {
                     var channel = $"{queue}.{i+1}";
-                    List<Message> msgs = new List<Message>();
                     for (int t = 0; t < send; t++)
                     {
-                        msgs.Add(new KubeMQ.SDK.csharp.Queue.Message
+                        msgs.Add(new Message()
                         {
                             MessageID = i.ToString(),
                             Queue =channel,
@@ -147,18 +90,25 @@ namespace QueusStream
                             }
                         });
                     }
-                    var resBatch = senders.Batch(msgs);
-                    if (!resBatch.HaveErrors) continue;
-                    Console.WriteLine($"message sent batch has errors");
-                    System.Environment.Exit(1);
+                    
                 }
-
-                Console.WriteLine($"sending {send*tasks} messages completed");    
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
-                RunTasks(tasks,false).Wait();
-                watch.Stop();
-                Console.WriteLine($"Receiveing {send*tasks} messages takes " + watch.ElapsedMilliseconds + " milliseconds");
+                await  queuesClient.Send(new SendRequest(msgs));
+                Console.WriteLine($"sending {send*tasks} messages completed");
+                Task[] taskArray = new Task[tasks];
+                for (int i = 0; i < taskArray.Length; i++)
+                {
+                    {
+                        taskArray[i] = GetPollMessages(i);
+                    }
+                }
+                await Task.WhenAll(taskArray);
+                long total = 0;
+                foreach (Task<long> task in taskArray)
+                {
+                     total+=task.Result;
+                }                
+                
+                Console.WriteLine($"Receiveing {tasks*send} messages takes {total/tasks}" +  " milliseconds");
                 Thread.Sleep(1000);
             } while (!roundsDone);
         }

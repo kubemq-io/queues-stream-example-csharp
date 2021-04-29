@@ -9,7 +9,7 @@
       "QueusStream/1.0.0": {
         "dependencies": {
           "Google.Protobuf": "3.15.8",
-          "KubeMQ.SDK.csharp": "1.4.1"
+          "KubeMQ.SDK.csharp": "1.5.0"
         },
         "runtime": {
           "QueusStream.dll": {}
@@ -77,7 +77,7 @@
           }
         }
       },
-      "KubeMQ.SDK.csharp/1.4.1": {
+      "KubeMQ.SDK.csharp/1.5.0": {
         "dependencies": {
           "Google.Protobuf": "3.15.8",
           "Grpc.Core": "2.37.0",
@@ -91,8 +91,8 @@
         },
         "runtime": {
           "lib/netstandard2.0/KubeMQ.SDK.csharp.dll": {
-            "assemblyVersion": "1.3.1.0",
-            "fileVersion": "1.3.1.0"
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.0.0"
           }
         }
       },
@@ -398,12 +398,12 @@
       "path": "grpc.core.api/2.37.0",
       "hashPath": "grpc.core.api.2.37.0.nupkg.sha512"
     },
-    "KubeMQ.SDK.csharp/1.4.1": {
+    "KubeMQ.SDK.csharp/1.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-LSVL6EqLfrxTfE6YgDTT3Sjj09akgyY9D0C3T5Sq3dqBx1HB2uAHHGbDVp5+e+7eHQV1hmrrKm4tYjNgBrtxUA==",
-      "path": "kubemq.sdk.csharp/1.4.1",
-      "hashPath": "kubemq.sdk.csharp.1.4.1.nupkg.sha512"
+      "sha512": "sha512-oR0WnWknsGvUUP95kflfH38Ja+TXqvFzp61wK9LvH0YxpmJR/bYwAEwVIYEcJDGZ+ec5FxgAEkQ0MoDh4pCg9g==",
+      "path": "kubemq.sdk.csharp/1.5.0",
+      "hashPath": "kubemq.sdk.csharp.1.5.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration/3.1.2": {
       "type": "package",

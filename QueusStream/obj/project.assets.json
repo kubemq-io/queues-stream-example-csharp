@@ -62,7 +62,7 @@
           "lib/netstandard2.0/Grpc.Core.Api.dll": {}
         }
       },
-      "KubeMQ.SDK.csharp/1.4.1": {
+      "KubeMQ.SDK.csharp/1.5.0": {
         "type": "package",
         "dependencies": {
           "Google.Protobuf": "3.15.8",
@@ -514,17 +514,17 @@
         "lib/netstandard2.0/Grpc.Core.Api.xml"
       ]
     },
-    "KubeMQ.SDK.csharp/1.4.1": {
-      "sha512": "LSVL6EqLfrxTfE6YgDTT3Sjj09akgyY9D0C3T5Sq3dqBx1HB2uAHHGbDVp5+e+7eHQV1hmrrKm4tYjNgBrtxUA==",
+    "KubeMQ.SDK.csharp/1.5.0": {
+      "sha512": "oR0WnWknsGvUUP95kflfH38Ja+TXqvFzp61wK9LvH0YxpmJR/bYwAEwVIYEcJDGZ+ec5FxgAEkQ0MoDh4pCg9g==",
       "type": "package",
-      "path": "kubemq.sdk.csharp/1.4.1",
+      "path": "kubemq.sdk.csharp/1.5.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "content/Icon.png",
         "contentFiles/any/net461/Icon.png",
         "contentFiles/any/netstandard2.0/Icon.png",
-        "kubemq.sdk.csharp.1.4.1.nupkg.sha512",
+        "kubemq.sdk.csharp.1.5.0.nupkg.sha512",
         "kubemq.sdk.csharp.nuspec",
         "lib/net461/KubeMQ.SDK.csharp.dll",
         "lib/netstandard2.0/KubeMQ.SDK.csharp.dll"
@@ -1192,7 +1192,7 @@
   "projectFileDependencyGroups": {
     "net5.0": [
       "Google.Protobuf >= 3.15.8",
-      "KubeMQ.SDK.csharp >= 1.4.1"
+      "KubeMQ.SDK.csharp >= 1.5.0"
     ]
   },
   "packageFolders": {
@@ -1244,7 +1244,7 @@
           },
           "KubeMQ.SDK.csharp": {
             "target": "Package",
-            "version": "[1.4.1, )"
+            "version": "[1.5.0, )"
           }
         },
         "imports": [
